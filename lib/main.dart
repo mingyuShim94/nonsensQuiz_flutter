@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'screens/start_screen.dart';
+import 'screens/quiz_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -21,9 +22,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/quiz',
-      builder: (context, state) => const Scaffold(
-        body: Center(child: Text('퀴즈 화면')),
-      ),
+      builder: (context, state) => const QuizScreen(),
     ),
     GoRoute(
       path: '/dogan',
