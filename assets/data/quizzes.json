@@ -4,23 +4,23 @@
       "id": "quiz_001",
       "fileName": "001.png",
       "answer": "다이소",
-      "hints": ["3글자입니다", "ㄷㅇㅅ", "다**"],
+      "hints": ["ㄷㅇㅅ", "다이*", "다이소"],
       "style": "style_01",
       "created_at": "2024-01-01T00:00:00Z"
     },
     {
       "id": "quiz_002",
       "fileName": "002.png",
-      "answer": "사냥개",
-      "hints": ["3글자입니다", "ㅅㄴㄱ", "사**"],
+      "answer": "삼계탕",
+      "hints": ["ㅅㄱㅌ", "삼계*", "삼계탕"],
       "style": "style_01",
       "created_at": "2024-01-01T00:00:00Z"
     },
     {
       "id": "quiz_003",
       "fileName": "003.png",
-      "answer": "삼계탕",
-      "hints": ["3글자입니다", "ㅅㄱㅌ", "삼**"],
+      "answer": "사냥개",
+      "hints": ["ㅅㄴㄱ", "사냥*", "사냥개"],
       "style": "style_01",
       "created_at": "2024-01-01T00:00:00Z"
     },
@@ -28,7 +28,7 @@
       "id": "quiz_004",
       "fileName": "004.png",
       "answer": "양말",
-      "hints": ["2글자입니다", "ㅇㅁ", "양*"],
+      "hints": ["ㅇㅁ", "양*", "양말"],
       "style": "style_01",
       "created_at": "2024-01-01T00:00:00Z"
     },
@@ -36,7 +36,7 @@
       "id": "quiz_005",
       "fileName": "005.png",
       "answer": "좌약",
-      "hints": ["2글자입니다", "ㅈㅇ", "좌*"],
+      "hints": ["ㅈㅇ", "좌*", "좌약"],
       "style": "style_01",
       "created_at": "2024-01-01T00:00:00Z"
     },
@@ -44,7 +44,7 @@
       "id": "quiz_006",
       "fileName": "001.png",
       "answer": "도서관",
-      "hints": ["3글자입니다", "ㄷㅅㄱ", "도**"],
+      "hints": ["ㄷㅅㄱ", "도서*", "도서관"],
       "style": "style_02",
       "created_at": "2024-01-01T00:00:00Z"
     },
@@ -52,7 +52,7 @@
       "id": "quiz_007",
       "fileName": "002.png",
       "answer": "발명품",
-      "hints": ["3글자입니다", "ㅂㅁㅍ", "발**"],
+      "hints": ["ㅂㅁㅍ", "발명*", "발명품"],
       "style": "style_02",
       "created_at": "2024-01-01T00:00:00Z"
     },
@@ -60,7 +60,7 @@
       "id": "quiz_008",
       "fileName": "003.png",
       "answer": "파노라마",
-      "hints": ["4글자입니다", "ㅍㄴㄹㅁ", "파***"],
+      "hints": ["ㅍㄴㄹㅁ", "파노*", "파노라마"],
       "style": "style_02",
       "created_at": "2024-01-01T00:00:00Z"
     },
@@ -68,7 +68,7 @@
       "id": "quiz_009",
       "fileName": "001.png",
       "answer": "포크레인",
-      "hints": ["4글자입니다", "ㅍㅋㄹㅇ", "포***"],
+      "hints": ["ㅍㅋㄹㅇ", "포크*", "포크레인"],
       "style": "style_03",
       "created_at": "2024-01-01T00:00:00Z"
     },
@@ -76,7 +76,7 @@
       "id": "quiz_010",
       "fileName": "001.png",
       "answer": "약혼자",
-      "hints": ["3글자입니다", "ㅇㅎㅈ", "약**"],
+      "hints": ["ㅇㅎㅈ", "약혼*", "약혼자"],
       "style": "style_04",
       "created_at": "2024-01-01T00:00:00Z"
     }

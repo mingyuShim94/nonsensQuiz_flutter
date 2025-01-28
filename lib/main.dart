@@ -1,37 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'screens/start_screen.dart';
-import 'screens/quiz_screen.dart';
-import 'theme/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nonsense_quiz/router/router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-void main() {
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 광고 SDK 초기화
+  await MobileAds.instance.initialize();
+
+  runApp(const ProviderScope(child: MyApp()));
 }
-
-final _router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const StartScreen(),
-    ),
-    GoRoute(
-      path: '/quiz',
-      builder: (context, state) => const QuizScreen(),
-    ),
-    GoRoute(
-      path: '/dogan',
-      builder: (context, state) => const Scaffold(
-        body: Center(child: Text('도감 화면')),
-      ),
-    ),
-  ],
-);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -39,10 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: '넌센스 그림 퀴즈',
-      theme: AppTheme.light,
-      routerConfig: _router,
-      debugShowCheckedModeBanner: false,
+      title: 'Nonsense Quiz',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      routerConfig: router,
     );
   }
 }

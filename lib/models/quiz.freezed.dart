@@ -21,13 +21,11 @@ Quiz _$QuizFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Quiz {
   String get id => throw _privateConstructorUsedError;
-  String get fileName => throw _privateConstructorUsedError;
+  String get question => throw _privateConstructorUsedError;
   String get answer => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
   List<String> get hints => throw _privateConstructorUsedError;
-  QuizStyle get style => throw _privateConstructorUsedError;
-  bool get isSolved => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  int get orderIndex => throw _privateConstructorUsedError;
 
   /// Serializes this Quiz to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,12 +43,11 @@ abstract class $QuizCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String fileName,
+      String question,
       String answer,
+      String imageUrl,
       List<String> hints,
-      QuizStyle style,
-      bool isSolved,
-      @JsonKey(name: 'created_at') DateTime createdAt});
+      int orderIndex});
 }
 
 /// @nodoc
@@ -69,42 +66,37 @@ class _$QuizCopyWithImpl<$Res, $Val extends Quiz>
   @override
   $Res call({
     Object? id = null,
-    Object? fileName = null,
+    Object? question = null,
     Object? answer = null,
+    Object? imageUrl = null,
     Object? hints = null,
-    Object? style = null,
-    Object? isSolved = null,
-    Object? createdAt = null,
+    Object? orderIndex = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      fileName: null == fileName
-          ? _value.fileName
-          : fileName // ignore: cast_nullable_to_non_nullable
+      question: null == question
+          ? _value.question
+          : question // ignore: cast_nullable_to_non_nullable
               as String,
       answer: null == answer
           ? _value.answer
           : answer // ignore: cast_nullable_to_non_nullable
               as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
       hints: null == hints
           ? _value.hints
           : hints // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      style: null == style
-          ? _value.style
-          : style // ignore: cast_nullable_to_non_nullable
-              as QuizStyle,
-      isSolved: null == isSolved
-          ? _value.isSolved
-          : isSolved // ignore: cast_nullable_to_non_nullable
-              as bool,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      orderIndex: null == orderIndex
+          ? _value.orderIndex
+          : orderIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -118,12 +110,11 @@ abstract class _$$QuizImplCopyWith<$Res> implements $QuizCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String fileName,
+      String question,
       String answer,
+      String imageUrl,
       List<String> hints,
-      QuizStyle style,
-      bool isSolved,
-      @JsonKey(name: 'created_at') DateTime createdAt});
+      int orderIndex});
 }
 
 /// @nodoc
@@ -139,59 +130,52 @@ class __$$QuizImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? fileName = null,
+    Object? question = null,
     Object? answer = null,
+    Object? imageUrl = null,
     Object? hints = null,
-    Object? style = null,
-    Object? isSolved = null,
-    Object? createdAt = null,
+    Object? orderIndex = null,
   }) {
     return _then(_$QuizImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      fileName: null == fileName
-          ? _value.fileName
-          : fileName // ignore: cast_nullable_to_non_nullable
+      question: null == question
+          ? _value.question
+          : question // ignore: cast_nullable_to_non_nullable
               as String,
       answer: null == answer
           ? _value.answer
           : answer // ignore: cast_nullable_to_non_nullable
               as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
       hints: null == hints
           ? _value._hints
           : hints // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      style: null == style
-          ? _value.style
-          : style // ignore: cast_nullable_to_non_nullable
-              as QuizStyle,
-      isSolved: null == isSolved
-          ? _value.isSolved
-          : isSolved // ignore: cast_nullable_to_non_nullable
-              as bool,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      orderIndex: null == orderIndex
+          ? _value.orderIndex
+          : orderIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$QuizImpl extends _Quiz {
+class _$QuizImpl implements _Quiz {
   const _$QuizImpl(
       {required this.id,
-      required this.fileName,
+      required this.question,
       required this.answer,
+      required this.imageUrl,
       required final List<String> hints,
-      required this.style,
-      this.isSolved = false,
-      @JsonKey(name: 'created_at') required this.createdAt})
-      : _hints = hints,
-        super._();
+      required this.orderIndex})
+      : _hints = hints;
 
   factory _$QuizImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizImplFromJson(json);
@@ -199,9 +183,11 @@ class _$QuizImpl extends _Quiz {
   @override
   final String id;
   @override
-  final String fileName;
+  final String question;
   @override
   final String answer;
+  @override
+  final String imageUrl;
   final List<String> _hints;
   @override
   List<String> get hints {
@@ -211,17 +197,11 @@ class _$QuizImpl extends _Quiz {
   }
 
   @override
-  final QuizStyle style;
-  @override
-  @JsonKey()
-  final bool isSolved;
-  @override
-  @JsonKey(name: 'created_at')
-  final DateTime createdAt;
+  final int orderIndex;
 
   @override
   String toString() {
-    return 'Quiz(id: $id, fileName: $fileName, answer: $answer, hints: $hints, style: $style, isSolved: $isSolved, createdAt: $createdAt)';
+    return 'Quiz(id: $id, question: $question, answer: $answer, imageUrl: $imageUrl, hints: $hints, orderIndex: $orderIndex)';
   }
 
   @override
@@ -230,21 +210,20 @@ class _$QuizImpl extends _Quiz {
         (other.runtimeType == runtimeType &&
             other is _$QuizImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.fileName, fileName) ||
-                other.fileName == fileName) &&
+            (identical(other.question, question) ||
+                other.question == question) &&
             (identical(other.answer, answer) || other.answer == answer) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             const DeepCollectionEquality().equals(other._hints, _hints) &&
-            (identical(other.style, style) || other.style == style) &&
-            (identical(other.isSolved, isSolved) ||
-                other.isSolved == isSolved) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+            (identical(other.orderIndex, orderIndex) ||
+                other.orderIndex == orderIndex));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, fileName, answer,
-      const DeepCollectionEquality().hash(_hints), style, isSolved, createdAt);
+  int get hashCode => Object.hash(runtimeType, id, question, answer, imageUrl,
+      const DeepCollectionEquality().hash(_hints), orderIndex);
 
   /// Create a copy of Quiz
   /// with the given fields replaced by the non-null parameter values.
@@ -262,35 +241,29 @@ class _$QuizImpl extends _Quiz {
   }
 }
 
-abstract class _Quiz extends Quiz {
+abstract class _Quiz implements Quiz {
   const factory _Quiz(
-          {required final String id,
-          required final String fileName,
-          required final String answer,
-          required final List<String> hints,
-          required final QuizStyle style,
-          final bool isSolved,
-          @JsonKey(name: 'created_at') required final DateTime createdAt}) =
-      _$QuizImpl;
-  const _Quiz._() : super._();
+      {required final String id,
+      required final String question,
+      required final String answer,
+      required final String imageUrl,
+      required final List<String> hints,
+      required final int orderIndex}) = _$QuizImpl;
 
   factory _Quiz.fromJson(Map<String, dynamic> json) = _$QuizImpl.fromJson;
 
   @override
   String get id;
   @override
-  String get fileName;
+  String get question;
   @override
   String get answer;
   @override
+  String get imageUrl;
+  @override
   List<String> get hints;
   @override
-  QuizStyle get style;
-  @override
-  bool get isSolved;
-  @override
-  @JsonKey(name: 'created_at')
-  DateTime get createdAt;
+  int get orderIndex;
 
   /// Create a copy of Quiz
   /// with the given fields replaced by the non-null parameter values.
