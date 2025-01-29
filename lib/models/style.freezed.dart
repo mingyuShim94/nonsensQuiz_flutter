@@ -24,6 +24,7 @@ mixin _$Style {
   String get name => throw _privateConstructorUsedError;
   String get thumbnailPath => throw _privateConstructorUsedError;
   int get progress => throw _privateConstructorUsedError;
+  int get requiredStars => throw _privateConstructorUsedError;
 
   /// Serializes this Style to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,12 @@ abstract class $StyleCopyWith<$Res> {
   factory $StyleCopyWith(Style value, $Res Function(Style) then) =
       _$StyleCopyWithImpl<$Res, Style>;
   @useResult
-  $Res call({String id, String name, String thumbnailPath, int progress});
+  $Res call(
+      {String id,
+      String name,
+      String thumbnailPath,
+      int progress,
+      int requiredStars});
 }
 
 /// @nodoc
@@ -61,6 +67,7 @@ class _$StyleCopyWithImpl<$Res, $Val extends Style>
     Object? name = null,
     Object? thumbnailPath = null,
     Object? progress = null,
+    Object? requiredStars = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -79,6 +86,10 @@ class _$StyleCopyWithImpl<$Res, $Val extends Style>
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
               as int,
+      requiredStars: null == requiredStars
+          ? _value.requiredStars
+          : requiredStars // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -90,7 +101,12 @@ abstract class _$$StyleImplCopyWith<$Res> implements $StyleCopyWith<$Res> {
       __$$StyleImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String thumbnailPath, int progress});
+  $Res call(
+      {String id,
+      String name,
+      String thumbnailPath,
+      int progress,
+      int requiredStars});
 }
 
 /// @nodoc
@@ -110,6 +126,7 @@ class __$$StyleImplCopyWithImpl<$Res>
     Object? name = null,
     Object? thumbnailPath = null,
     Object? progress = null,
+    Object? requiredStars = null,
   }) {
     return _then(_$StyleImpl(
       id: null == id
@@ -128,6 +145,10 @@ class __$$StyleImplCopyWithImpl<$Res>
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
               as int,
+      requiredStars: null == requiredStars
+          ? _value.requiredStars
+          : requiredStars // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -139,7 +160,8 @@ class _$StyleImpl implements _Style {
       {required this.id,
       required this.name,
       required this.thumbnailPath,
-      required this.progress});
+      this.progress = 0,
+      this.requiredStars = 0});
 
   factory _$StyleImpl.fromJson(Map<String, dynamic> json) =>
       _$$StyleImplFromJson(json);
@@ -151,11 +173,15 @@ class _$StyleImpl implements _Style {
   @override
   final String thumbnailPath;
   @override
+  @JsonKey()
   final int progress;
+  @override
+  @JsonKey()
+  final int requiredStars;
 
   @override
   String toString() {
-    return 'Style(id: $id, name: $name, thumbnailPath: $thumbnailPath, progress: $progress)';
+    return 'Style(id: $id, name: $name, thumbnailPath: $thumbnailPath, progress: $progress, requiredStars: $requiredStars)';
   }
 
   @override
@@ -168,13 +194,15 @@ class _$StyleImpl implements _Style {
             (identical(other.thumbnailPath, thumbnailPath) ||
                 other.thumbnailPath == thumbnailPath) &&
             (identical(other.progress, progress) ||
-                other.progress == progress));
+                other.progress == progress) &&
+            (identical(other.requiredStars, requiredStars) ||
+                other.requiredStars == requiredStars));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, thumbnailPath, progress);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, thumbnailPath, progress, requiredStars);
 
   /// Create a copy of Style
   /// with the given fields replaced by the non-null parameter values.
@@ -197,7 +225,8 @@ abstract class _Style implements Style {
       {required final String id,
       required final String name,
       required final String thumbnailPath,
-      required final int progress}) = _$StyleImpl;
+      final int progress,
+      final int requiredStars}) = _$StyleImpl;
 
   factory _Style.fromJson(Map<String, dynamic> json) = _$StyleImpl.fromJson;
 
@@ -209,6 +238,8 @@ abstract class _Style implements Style {
   String get thumbnailPath;
   @override
   int get progress;
+  @override
+  int get requiredStars;
 
   /// Create a copy of Style
   /// with the given fields replaced by the non-null parameter values.

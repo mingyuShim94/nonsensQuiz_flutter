@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nonsense_quiz/providers/coins_provider.dart';
 import 'package:nonsense_quiz/widgets/main/style_list.dart';
 import 'package:nonsense_quiz/providers/main_page_provider.dart';
-import 'package:nonsense_quiz/widgets/common/ad_banner.dart';
+import 'package:nonsense_quiz/widgets/settings/settings_dialog.dart';
 
 class MainPage extends ConsumerWidget {
   const MainPage({super.key});
@@ -29,7 +30,10 @@ class MainPage extends ConsumerWidget {
               iconSize: 24,
               padding: const EdgeInsets.all(12),
               onPressed: () {
-                Navigator.pushNamed(context, '/settings');
+                showDialog(
+                  context: context,
+                  builder: (context) => const SettingsDialog(),
+                );
               },
             ),
             Row(
@@ -149,7 +153,6 @@ class MainPage extends ConsumerWidget {
               ),
             ),
           ),
-          const AdBanner(),
         ],
       ),
     );

@@ -45,41 +45,59 @@ class _AdBannerState extends State<AdBanner> {
   @override
   void dispose() {
     _bannerAd?.dispose();
+    _isLoaded = false;
+    _isAdLoading = false;
     super.dispose();
   }
 
   void _loadAd() async {
-    if (!mounted) return;
+    if (!mounted || _isAdLoading) return;
 
-    final width = MediaQuery.of(context).size.width.truncate();
-    final size = await AdSize.getAnchoredAdaptiveBannerAdSize(
-      Orientation.portrait,
-      width,
-    );
-
-    if (size == null || !mounted) return;
-
-    _bannerAd = BannerAd(
-      adUnitId: _adUnitId,
-      size: size,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
+    setState(() {
+      _isAdLoading = true;
+    });
 
     try {
+      final width = MediaQuery.of(context).size.width.truncate();
+      final size = await AdSize.getAnchoredAdaptiveBannerAdSize(
+        Orientation.portrait,
+        width,
+      );
+
+      if (size == null || !mounted) {
+        setState(() {
+          _isAdLoading = false;
+        });
+        return;
+      }
+
+      _bannerAd = BannerAd(
+        adUnitId: _adUnitId,
+        size: size,
+        request: const AdRequest(),
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _isLoaded = true;
+              _isAdLoading = false;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+            setState(() {
+              _isAdLoading = false;
+            });
+          },
+        ),
+      );
+
       await _bannerAd!.load();
     } catch (e) {
       _bannerAd?.dispose();
       _bannerAd = null;
+      setState(() {
+        _isAdLoading = false;
+      });
     }
   }
 

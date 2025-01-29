@@ -6,12 +6,11 @@ part of 'coins_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$coinsHash() => r'261960f962b1ba06f9695208212628e2fed36907';
+String _$coinsHash() => r'fc65cf741334598bb5d5a4892a304ef7e0d45ba3';
 
 /// See also [Coins].
 @ProviderFor(Coins)
-final coinsProvider =
-    AutoDisposeNotifierProvider<Coins, AsyncValue<int>>.internal(
+final coinsProvider = AsyncNotifierProvider<Coins, int>.internal(
   Coins.new,
   name: r'coinsProvider',
   debugGetCreateSourceHash:
@@ -20,6 +19,6 @@ final coinsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$Coins = AutoDisposeNotifier<AsyncValue<int>>;
+typedef _$Coins = AsyncNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

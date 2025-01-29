@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nonsense_quiz/data/quiz_data.dart';
 import 'package:nonsense_quiz/providers/quiz_progress_provider.dart';
-import 'package:nonsense_quiz/widgets/common/ad_banner.dart';
 
 class QuizSetPage extends ConsumerWidget {
   final String styleId;
@@ -85,7 +84,6 @@ class QuizSetPage extends ConsumerWidget {
               },
             ),
           ),
-          const AdBanner(),
         ],
       ),
     );

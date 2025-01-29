@@ -1,18 +1,33 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'coins_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Coins extends _$Coins {
+  static const _coinsKey = 'user_coins';
+  late SharedPreferences _prefs;
+
   @override
-  AsyncValue<int> build() {
-    return const AsyncValue.data(10); // 초기 코인 10개
+  Future<int> build() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getInt(_coinsKey) ?? 100; // 초기 코인 100개
   }
 
-  void spendCoins(int amount) {
-    final currentCoins = state.value ?? 0;
-    if (currentCoins >= amount) {
-      state = AsyncValue.data(currentCoins - amount);
+  Future<bool> spendCoins(int amount) async {
+    final currentState = await future;
+
+    if (currentState >= amount) {
+      final newAmount = currentState - amount;
+      await _prefs.setInt(_coinsKey, newAmount);
+      state = AsyncData(newAmount);
+      return true;
     }
+    return false;
+  }
+
+  Future<void> resetCoins() async {
+    await _prefs.remove(_coinsKey);
+    state = const AsyncData(100); // 초기 코인으로 리셋
   }
 }

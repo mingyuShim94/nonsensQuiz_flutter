@@ -9,7 +9,8 @@ class Style with _$Style {
     required String id,
     required String name,
     required String thumbnailPath,
-    required int progress,
+    @Default(0) int progress,
+    @Default(0) int requiredStars,
   }) = _Style;
 
   factory Style.fromJson(Map<String, dynamic> json) => _$StyleFromJson(json);

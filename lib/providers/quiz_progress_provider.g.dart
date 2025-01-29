@@ -6,12 +6,12 @@ part of 'quiz_progress_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$quizProgressHash() => r'e6fa5eedc6bfbb69c3683fc859e3a9f7ed692374';
+String _$quizProgressHash() => r'029be89ff1107e6d5cee7158e8d26e6480e21298';
 
 /// See also [QuizProgress].
 @ProviderFor(QuizProgress)
-final quizProgressProvider = AutoDisposeNotifierProvider<QuizProgress,
-    Map<String, Set<String>>>.internal(
+final quizProgressProvider =
+    NotifierProvider<QuizProgress, Map<String, Set<String>>>.internal(
   QuizProgress.new,
   name: r'quizProgressProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final quizProgressProvider = AutoDisposeNotifierProvider<QuizProgress,
   allTransitiveDependencies: null,
 );
 
-typedef _$QuizProgress = AutoDisposeNotifier<Map<String, Set<String>>>;
+typedef _$QuizProgress = Notifier<Map<String, Set<String>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

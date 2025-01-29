@@ -10,7 +10,8 @@ _$StyleImpl _$$StyleImplFromJson(Map<String, dynamic> json) => _$StyleImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       thumbnailPath: json['thumbnailPath'] as String,
-      progress: (json['progress'] as num).toInt(),
+      progress: (json['progress'] as num?)?.toInt() ?? 0,
+      requiredStars: (json['requiredStars'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$StyleImplToJson(_$StyleImpl instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$$StyleImplToJson(_$StyleImpl instance) =>
       'name': instance.name,
       'thumbnailPath': instance.thumbnailPath,
       'progress': instance.progress,
+      'requiredStars': instance.requiredStars,
     };

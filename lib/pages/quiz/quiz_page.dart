@@ -14,6 +14,7 @@ import 'package:nonsense_quiz/providers/quiz_progress_provider.dart';
 import 'package:nonsense_quiz/utils/hint_generator.dart';
 import 'package:nonsense_quiz/widgets/quiz/hint/hint_display.dart';
 import 'package:nonsense_quiz/widgets/common/ad_banner.dart';
+import 'package:nonsense_quiz/providers/coins_provider.dart';
 
 class QuizPage extends ConsumerStatefulWidget {
   final String styleId;
@@ -33,6 +34,26 @@ class _QuizPageState extends ConsumerState<QuizPage> {
   bool _showFeedback = false;
   bool _isCorrect = false;
   String _feedbackMessage = '';
+  final FocusNode _answerFocusNode = FocusNode();
+
+  @override
+  void didUpdateWidget(QuizPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // 퀴즈 ID가 변경되면 상태 초기화
+    if (oldWidget.quizId != widget.quizId) {
+      setState(() {
+        _showFeedback = false;
+        _isCorrect = false;
+        _feedbackMessage = '';
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _answerFocusNode.dispose();
+    super.dispose();
+  }
 
   void _handleAnswer(String answer) async {
     await ref
@@ -65,6 +86,19 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     });
   }
 
+  int _getMaxQuizCount(String styleId) {
+    switch (styleId) {
+      case 'style_01':
+        return 7;
+      case 'style_02':
+        return 4;
+      case 'style_03':
+        return 7;
+      default:
+        return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final quiz = ref.watch(currentQuizProvider((
@@ -82,7 +116,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
+          onPressed: () => context.pop(),
         ),
         actions: [
           ref.watch(coinsProvider).when(
@@ -148,6 +182,11 @@ class _QuizPageState extends ConsumerState<QuizPage> {
                                 false,
                           ),
                           isCorrect: _isCorrect,
+                          onTap: () {
+                            if (!_isCorrect) {
+                              _answerFocusNode.requestFocus();
+                            }
+                          },
                         ),
                       ),
 
@@ -161,6 +200,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
                               AnswerInputField(
                                 onSubmitted: _handleAnswer,
                                 isEnabled: !_showFeedback,
+                                focusNode: _answerFocusNode,
                               ),
                               const SizedBox(height: 16),
                               //힌트버튼
@@ -177,12 +217,21 @@ class _QuizPageState extends ConsumerState<QuizPage> {
                                       false,
                                 ),
                                 onHintRequested: (index) async {
-                                  final success = await ref
-                                      .read(quizControllerProvider.notifier)
-                                      .useHint(
-                                          widget.styleId, widget.quizId, index);
+                                  // 힌트 비용 계산
+                                  final hintCosts = [4, 6, 10];
+                                  final cost = hintCosts[index];
 
-                                  if (!success) {
+                                  // 코인 차감 시도
+                                  final success = await ref
+                                      .read(coinsProvider.notifier)
+                                      .spendCoins(cost);
+
+                                  if (success) {
+                                    // 코인 차감 성공 시 힌트 사용
+                                    ref.read(hintStateProvider.notifier).useHint(
+                                        '${widget.styleId}/${widget.quizId}',
+                                        index);
+                                  } else {
                                     if (!mounted) return;
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -196,13 +245,31 @@ class _QuizPageState extends ConsumerState<QuizPage> {
                               //다음 문제 버튼
                               FilledButton.icon(
                                 onPressed: () {
-                                  // 다음 퀴즈로 이동
-                                  final nextQuizId =
-                                      (int.parse(widget.quizId) + 1)
-                                          .toString()
-                                          .padLeft(3, '0');
-                                  context.go(
-                                      '/quiz/${widget.styleId}/$nextQuizId');
+                                  // 다음 풀지 않은 퀴즈 찾기
+                                  final maxQuizCount =
+                                      _getMaxQuizCount(widget.styleId);
+                                  String? nextQuizId;
+
+                                  for (int i = 1; i <= maxQuizCount; i++) {
+                                    final quizId = i.toString().padLeft(3, '0');
+                                    final isCompleted = ref
+                                        .read(quizProgressProvider.notifier)
+                                        .isQuizCompleted(
+                                            widget.styleId, quizId);
+
+                                    if (!isCompleted) {
+                                      nextQuizId = quizId;
+                                      break;
+                                    }
+                                  }
+
+                                  if (nextQuizId != null) {
+                                    context.pushReplacement(
+                                        '/quiz/${widget.styleId}/$nextQuizId');
+                                  } else {
+                                    // 모든 문제를 풀었으면 퀴즈 세트 페이지로 이동
+                                    context.pop();
+                                  }
                                 },
                                 icon: const Icon(Icons.arrow_forward),
                                 label: const Text('다음 문제'),
@@ -223,7 +290,6 @@ class _QuizPageState extends ConsumerState<QuizPage> {
                   ),
                 ),
               ),
-              const AdBanner(),
             ],
           ),
         ),

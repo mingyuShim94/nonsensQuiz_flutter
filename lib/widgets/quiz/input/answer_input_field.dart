@@ -4,11 +4,13 @@ import 'package:flutter/services.dart';
 class AnswerInputField extends StatefulWidget {
   final void Function(String) onSubmitted;
   final bool isEnabled;
+  final FocusNode? focusNode;
 
   const AnswerInputField({
     super.key,
     required this.onSubmitted,
     this.isEnabled = true,
+    this.focusNode,
   });
 
   @override
@@ -17,19 +19,16 @@ class AnswerInputField extends StatefulWidget {
 
 class _AnswerInputFieldState extends State<AnswerInputField> {
   late final TextEditingController _controller;
-  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _focusNode = FocusNode();
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -37,7 +36,7 @@ class _AnswerInputFieldState extends State<AnswerInputField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
-      focusNode: _focusNode,
+      focusNode: widget.focusNode,
       enabled: widget.isEnabled,
       decoration: InputDecoration(
         hintText: '정답을 입력하세요',
