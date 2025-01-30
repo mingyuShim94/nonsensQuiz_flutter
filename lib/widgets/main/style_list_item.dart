@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nonsense_quiz/data/quiz_data.dart';
 import 'package:nonsense_quiz/models/style.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +18,7 @@ class StyleListItem extends StatelessWidget {
       color: Theme.of(context).colorScheme.surfaceContainer,
       child: ListTile(
         contentPadding: const EdgeInsets.all(16.0),
+        // 레벨 이미지
         leading: Image.asset(
           style.thumbnailPath,
           width: 50,
@@ -68,10 +70,11 @@ class StyleListItem extends StatelessWidget {
                 ),
               ),
             ),
+            //퀴즈 진행도: 퀴즈 수 / 최대 퀴즈 수
             Center(
               child: Text(
-                '${(style.progress * _getMaxQuizCount(style.id) / 100).round()}'
-                ' / ${_getMaxQuizCount(style.id)}',
+                '${(style.progress * QuizData.getQuizCount(style.id) / 100).round()}'
+                ' / ${QuizData.getQuizCount(style.id)}',
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: theme.colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
@@ -97,18 +100,5 @@ class StyleListItem extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  int _getMaxQuizCount(String styleId) {
-    switch (styleId) {
-      case '1':
-        return 7;
-      case '2':
-        return 4;
-      case '3':
-        return 7;
-      default:
-        return 0;
-    }
   }
 }

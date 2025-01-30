@@ -25,6 +25,7 @@ class MainPage extends ConsumerWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // 설정 버튼
             IconButton(
               icon: const Icon(Icons.settings),
               iconSize: 24,
@@ -36,6 +37,8 @@ class MainPage extends ConsumerWidget {
                 );
               },
             ),
+
+            // 코인 및 별 표시
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -128,6 +131,8 @@ class MainPage extends ConsumerWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: stars.when(
                     data: (starCount) =>
+
+                        //레벨리스트
                         StyleList(styleList: styleList, stars: starCount),
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),

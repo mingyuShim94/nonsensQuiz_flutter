@@ -89,11 +89,11 @@ class _QuizPageState extends ConsumerState<QuizPage> {
   int _getMaxQuizCount(String styleId) {
     switch (styleId) {
       case 'style_01':
-        return 7;
+        return 9;
       case 'style_02':
-        return 4;
+        return 9;
       case 'style_03':
-        return 7;
+        return 9;
       default:
         return 0;
     }

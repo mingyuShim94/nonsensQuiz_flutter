@@ -11,19 +11,19 @@ class StyleRepository {
     return [
       const Style(
         id: '1',
-        name: '화풍 1',
+        name: '레벨 1',
         thumbnailPath: 'assets/images/quiz/style_01/001.png',
         requiredStars: 0,
       ),
       const Style(
         id: '2',
-        name: '화풍 2',
+        name: '레벨 2',
         thumbnailPath: 'assets/images/quiz/style_02/001.png',
         requiredStars: 5,
       ),
       const Style(
         id: '3',
-        name: '화풍 3',
+        name: '레벨 3',
         thumbnailPath: 'assets/images/quiz/style_03/001.png',
         requiredStars: 10,
       ),

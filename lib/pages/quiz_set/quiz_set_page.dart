@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nonsense_quiz/data/quiz_data.dart';
 import 'package:nonsense_quiz/providers/quiz_progress_provider.dart';
+import 'package:nonsense_quiz/config/quiz_config.dart';
 
 class QuizSetPage extends ConsumerWidget {
   final String styleId;
@@ -16,25 +17,11 @@ class QuizSetPage extends ConsumerWidget {
     return 'style_${id.padLeft(2, '0')}';
   }
 
-  int _getMaxQuizCount(String styleId) {
-    switch (styleId) {
-      case '1':
-        return 7;
-      case '2':
-        return 4;
-      case '3':
-        return 7;
-
-      default:
-        return 0;
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final formattedStyleId = _getFormattedStyleId(styleId);
-    final maxQuizCount = _getMaxQuizCount(styleId);
+    final maxQuizCount = QuizData.getQuizCount(styleId);
     final quizProgress = ref.watch(quizProgressProvider);
 
     return Scaffold(
