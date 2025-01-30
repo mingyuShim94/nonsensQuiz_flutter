@@ -3,7 +3,6 @@ import 'package:nonsense_quiz/models/style.dart';
 import 'package:nonsense_quiz/repositories/style_repository.dart';
 import 'package:nonsense_quiz/repositories/user_repository.dart';
 import 'package:nonsense_quiz/providers/quiz_progress_provider.dart';
-import 'package:nonsense_quiz/config/quiz_config.dart';
 import 'package:nonsense_quiz/data/quiz_data.dart';
 
 final styleListProvider = FutureProvider<List<Style>>((ref) async {
