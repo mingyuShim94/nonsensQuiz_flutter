@@ -15,6 +15,8 @@ import 'package:nonsense_quiz/utils/hint_generator.dart';
 import 'package:nonsense_quiz/widgets/quiz/hint/hint_display.dart';
 import 'package:nonsense_quiz/widgets/common/ad_banner.dart';
 import 'package:nonsense_quiz/providers/coins_provider.dart';
+import 'package:nonsense_quiz/services/ad_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuizPage extends ConsumerStatefulWidget {
   final String styleId;
@@ -35,6 +37,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
   bool _isCorrect = false;
   String _feedbackMessage = '';
   final FocusNode _answerFocusNode = FocusNode();
+  bool _isLoadingAd = false;
 
   @override
   void didUpdateWidget(QuizPage oldWidget) {
@@ -86,6 +89,57 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     });
   }
 
+  void _handleHintRequest(int hintIndex) async {
+    if (hintIndex == 2) {
+      // 정답 보기 (광고 시청)
+      setState(() {
+        _isLoadingAd = true;
+      });
+
+      final correctAnswer =
+          QuizData.getAnswer(widget.styleId, widget.quizId) ?? '';
+
+      await AdService.showRewardedAd(
+        onRewarded: () {
+          if (mounted) {
+            setState(() {
+              _isLoadingAd = false;
+            });
+            _handleAnswer(correctAnswer);
+          }
+        },
+        onAdFailed: () {
+          if (mounted) {
+            setState(() {
+              _isLoadingAd = false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('광고 로드에 실패했습니다. 다시 시도해주세요.')),
+            );
+          }
+        },
+      );
+    } else {
+      // 기존 힌트 로직 (코인 사용)
+      final hintCosts = [4, 6, 10];
+      final cost = hintCosts[hintIndex];
+
+      final success = await ref.read(coinsProvider.notifier).spendCoins(cost);
+
+      if (success) {
+        ref.read(hintStateProvider.notifier).useHint(
+              '${widget.styleId}/${widget.quizId}',
+              hintIndex,
+            );
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('코인이 부족합니다!')),
+        );
+      }
+    }
+  }
+
   int _getMaxQuizCount(String styleId) {
     switch (styleId) {
       case 'style_01':
@@ -97,6 +151,84 @@ class _QuizPageState extends ConsumerState<QuizPage> {
       default:
         return 0;
     }
+  }
+
+  // 코인 구매 다이얼로그를 보여주는 메서드
+  void _showCoinPurchaseDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Text('💰 '),
+            Text('공짜 코인'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.play_circle_outline),
+              title: const Text('광고 시청'),
+              subtitle: const Text('20코인'),
+              onTap: () async {
+                Navigator.pop(context);
+                await AdService.showCoinRewardedAd(
+                  onRewarded: () {
+                    // 광고 시청 완료 시 20코인 지급
+                    ref.read(coinsProvider.notifier).addCoins(20);
+                  },
+                  onAdFailed: () {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('광고 로드에 실패했습니다. 다시 시도해주세요.'),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.star_outline),
+              title: const Text('앱 리뷰 작성'),
+              subtitle: const Text('50코인'),
+              onTap: () {
+                Navigator.pop(context);
+                debugPrint('✍️ 앱 리뷰 작성 버튼이 눌렸습니다');
+                // TODO: 스토어 배포 후 리뷰 작성 링크 연결
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.favorite_outline),
+              title: const Text('SNS 팔로우'),
+              subtitle: const Text('50코인'),
+              onTap: () async {
+                Navigator.pop(context);
+                final Uri url = Uri.parse('https://x.com/ggugguday');
+                if (!await launchUrl(url)) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('링크를 여는데 실패했습니다.'),
+                    ),
+                  );
+                }
+                // TODO: SNS 팔로우 확인 후 코인 지급 로직 구현
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('닫기'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -120,12 +252,62 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         ),
         actions: [
           ref.watch(coinsProvider).when(
-                data: (coins) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Center(child: Text('💰 $coins')),
+                data: (coins) => Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
+                  ),
+                  child: FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: theme.colorScheme.secondaryContainer,
+                      foregroundColor: theme.colorScheme.onSecondaryContainer,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 0,
+                      ),
+                    ),
+                    onPressed: _showCoinPurchaseDialog,
+                    icon: const Text(
+                      '💰',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    label: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          coins.toString(),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.onSecondaryContainer,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(
+                          Icons.add_box_rounded,
+                          size: 20,
+                          color: Colors.green,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                loading: () => const CircularProgressIndicator(),
-                error: (_, __) => const Icon(Icons.error),
+                loading: () => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                ),
+                error: (_, __) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Icon(
+                    Icons.error_outline,
+                    color: theme.colorScheme.error,
+                  ),
+                ),
               ),
           IconButton(
             icon: const Icon(Icons.share),
@@ -216,30 +398,9 @@ class _QuizPageState extends ConsumerState<QuizPage> {
                                           ?.contains(index) ??
                                       false,
                                 ),
-                                onHintRequested: (index) async {
-                                  // 힌트 비용 계산
-                                  final hintCosts = [4, 6, 10];
-                                  final cost = hintCosts[index];
-
-                                  // 코인 차감 시도
-                                  final success = await ref
-                                      .read(coinsProvider.notifier)
-                                      .spendCoins(cost);
-
-                                  if (success) {
-                                    // 코인 차감 성공 시 힌트 사용
-                                    ref.read(hintStateProvider.notifier).useHint(
-                                        '${widget.styleId}/${widget.quizId}',
-                                        index);
-                                  } else {
-                                    if (!mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('코인이 부족합니다!')),
-                                    );
-                                  }
-                                },
+                                onHintRequested: _handleHintRequest,
                                 isEnabled: !_showFeedback,
+                                isLoading: _isLoadingAd,
                               ),
                             ] else ...[
                               //다음 문제 버튼

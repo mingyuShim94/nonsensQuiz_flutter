@@ -64,27 +64,7 @@ class SettingsDialog extends ConsumerWidget {
             leading: const Icon(Icons.info),
             title: const Text('현재 버전'),
             trailing: const Text('1.0.0'), // 실제 버전으로 변경 필요
-          ),
-          ListTile(
-            leading: const Icon(Icons.privacy_tip),
-            title: const Text('Privacy Policy'),
-            onTap: () {
-              print('Privacy Policy');
-              // launchUrl(Uri.parse(
-              //   'https://your-privacy-policy-url.com', // 실제 URL로 변경 필요
-              // ));
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.description),
-            title: const Text('Terms of Use'),
-            onTap: () {
-              print('Terms of Use');
-              // launchUrl(Uri.parse(
-              //   'https://your-terms-of-use-url.com', // 실제 URL로 변경 필요
-              // ));
-            },
-          ),
+          )
         ],
       ),
     );

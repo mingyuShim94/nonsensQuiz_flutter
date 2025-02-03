@@ -30,4 +30,15 @@ class Coins extends _$Coins {
     await _prefs.remove(_coinsKey);
     state = const AsyncData(100); // 초기 코인으로 리셋
   }
+
+  Future<void> addCoins(int amount) async {
+    try {
+      final currentCoins = await future;
+      final newAmount = currentCoins + amount;
+      await _prefs.setInt(_coinsKey, newAmount);
+      state = AsyncData(newAmount);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
 }
